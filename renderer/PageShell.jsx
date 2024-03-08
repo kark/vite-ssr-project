@@ -1,24 +1,33 @@
-import React from 'react'
-import PropTypes from 'prop-types'
-import logo from './logo.svg'
-import './PageShell.css'
-import { PageContextProvider } from './usePageContext'
-import { Link } from './Link'
-import { childrenPropType } from './PropTypeValues'
+import React from "react";
+import PropTypes from "prop-types";
+import "./PageShell.css";
+import { PageContextProvider } from "./usePageContext";
+import { Link } from "./Link";
+import { childrenPropType, themePropType } from "./PropTypeValues";
+import { ThemeProvider } from "@commercetools-uikit/design-system";
+import PrimaryButton from "@commercetools-uikit/primary-button";
+import "@commercetools-uikit/design-system/materials/custom-properties_recolouring.css";
+// import "@commercetools-uikit/design-system/materials/custom-properties_default.css";
 
-export { PageShell }
+export { PageShell };
 
 PageShell.propTypes = {
   pageContext: PropTypes.any,
-  children: childrenPropType
-}
-function PageShell({ pageContext, children }) {
+  children: childrenPropType,
+  theme: themePropType,
+};
+function PageShell({ pageContext, theme }) {
   return (
     <React.StrictMode>
       <PageContextProvider pageContext={pageContext}>
+        <ThemeProvider theme={theme} />
         <Layout>
           <Sidebar>
-            <Logo />
+            <PrimaryButton
+              label="A label text"
+              onClick={() => alert("Button clicked")}
+              isDisabled={false}
+            />
             <Link className="navitem" href="/">
               Home
             </Link>
@@ -26,79 +35,45 @@ function PageShell({ pageContext, children }) {
               About
             </Link>
           </Sidebar>
-          <Content>{children}</Content>
         </Layout>
       </PageContextProvider>
     </React.StrictMode>
-  )
+  );
 }
 
 Layout.propTypes = {
-  children: childrenPropType
-}
+  children: childrenPropType,
+};
 function Layout({ children }) {
   return (
     <div
       style={{
-        display: 'flex',
+        display: "flex",
         maxWidth: 900,
-        margin: 'auto'
+        margin: "auto",
       }}
     >
       {children}
     </div>
-  )
+  );
 }
 
 Sidebar.propTypes = {
-  children: childrenPropType
-}
+  children: childrenPropType,
+};
 function Sidebar({ children }) {
   return (
     <div
       style={{
         padding: 20,
         flexShrink: 0,
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        lineHeight: '1.8em'
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        lineHeight: "1.8em",
       }}
     >
       {children}
     </div>
-  )
-}
-
-Content.propTypes = {
-  children: childrenPropType
-}
-function Content({ children }) {
-  return (
-    <div
-      style={{
-        padding: 20,
-        paddingBottom: 50,
-        borderLeft: '2px solid #eee',
-        minHeight: '100vh'
-      }}
-    >
-      {children}
-    </div>
-  )
-}
-
-function Logo() {
-  return (
-    <div
-      style={{
-        marginTop: 20,
-        marginBottom: 10
-      }}
-    >
-      <a href="/">
-        <img src={logo} height={64} width={64} alt="logo" />
-      </a>
-    </div>
-  )
+  );
 }
